@@ -2,7 +2,8 @@ pipeline {
 	agent any 
 	environment { 
 		PATH = "/usr/bin:$PATH" 
-		tag = "latest" dockerHubUser="imrankha4n" 
+		tag = "latest" 
+		dockerHubUser="imrankha4n" 
 		containerName="insure-me"
 		httpPort="8081" 
 		} 

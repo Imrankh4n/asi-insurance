@@ -24,8 +24,8 @@ pipeline {
 		} 
 		stage("push image to dockerhub"){ 
 			steps{ 
-				withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) { 
-					sh "docker login -u $dockerUser -p $dockerPassword" sh "docker push $dockerHubUser/$containerName:$tag" 
+				withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
+					sh "docker login -u $dockerHubUser -p $dockerPassword" sh "docker push $dockerHubUser/$containerName:$tag" 
 					} 
 				}
 		} 
@@ -46,7 +46,7 @@ node{
         mavenHome = tool name: 'maven' , type: 'maven'
         mavenCMD = "${mavenHome}/bin/mvn"
         tag="3.0"
-	dockerHubUser="anujsharma1990"
+	dockerHubUser="imrankha4n"
 	containerName="insure-me"
 	httpPort="8081"
     }
@@ -84,9 +84,9 @@ node{
 	
     stage('Publishing Image to DockerHub'){
         echo 'Pushing the docker image to DockerHub'
-        withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'dockerUser', passwordVariable: 'dockerPassword')]) {
-			sh "docker login -u $dockerUser -p $dockerPassword"
-			sh "docker push $dockerUser/$containerName:$tag"
+        withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'dockerHubUser', passwordVariable: 'dockerPassword')]) {
+			sh "docker login -u $dockerHubUser -p $dockerPassword"
+			sh "docker push $dockerHubUser/$containerName:$tag"
 			echo "Image push complete"
         } 
     }    

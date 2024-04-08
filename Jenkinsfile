@@ -25,14 +25,14 @@ pipeline {
 		stage("push image to dockerhub"){ 
 			steps{ 
 				withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
-					sh "docker login -u $dockerHubUser -p $dockerPassword && docker push $dockerHubUser/$containerName:$tag" 
+					sh "docker login -u $dockerHubUser -p $dockerPassword" && sh "docker push $dockerHubUser/$containerName:$tag" 
 					} 
 				}
 		} 
 
 		stage("Docker container deployment"){ 
 			steps { 
-				sh "docker rm $containerName -f" sh "docker pull $dockerHubUser/$containerName:$tag && docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag" echo "Application started on port: ${httpPort} (http)" 
+				sh "docker rm $containerName -f" && sh "docker pull $dockerHubUser/$containerName:$tag && docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag" echo "Application started on port: ${httpPort} (http)" 
 				} 
 		} 
 	} 

@@ -2,7 +2,7 @@ pipeline {
 	agent any 
 	environment { 
 		PATH = "/usr/bin:$PATH" 
-		tag = "latest" 
+		tag = "1.0" 
 		dockerHubUser="imrankha4n" 
 		containerName="insure-me"
 		httpPort="8081" 
@@ -45,7 +45,7 @@ node{
         echo 'Initialize Environment'
         mavenHome = tool name: 'maven' , type: 'maven'
         mavenCMD = "${mavenHome}/bin/mvn"
-        tag="latest"
+        tag="1.0"
 	dockerHubUser="imrankha4n"
 	containerName="insure-me"
 	httpPort="8081"

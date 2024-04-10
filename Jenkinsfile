@@ -32,7 +32,7 @@ pipeline {
 
 		stage("Docker container deployment"){ 
 			steps { 
-				sh "docker rm $containerName -f sh docker pull $dockerHubUser/$containerName:$tag && docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag && echo \"Application started on port: ${httpPort} (http)\""
+				sh "docker rm $containerName -f sh docker pull $dockerHubUser/$containerName:$tag && docker run -d --rm -p $httpPort:$httpPort0 -v /var/run/docker.sock:/var/run/docker.sock admin/jenkins --name $containerName $dockerHubUser/$containerName:$tag && echo \"Application started on port: ${httpPort} (http)\""
 				} 
 		} 
 	} 

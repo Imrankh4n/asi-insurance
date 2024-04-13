@@ -24,11 +24,7 @@ pipeline {
                 		script {
 		                    // Login to Docker registry
 		                    echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-		
-		                    // Build and push Docker image
-		                    sh 'docker build -t my-image .'
-		                    sh 'docker push my-image'
-                		     }
+		                    }
 			}
 		}
 		stage("Build Docker Image"){ 

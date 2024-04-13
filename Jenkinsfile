@@ -4,6 +4,8 @@ pipeline {
 		PATH = "/usr/bin:$PATH" 
 		tag = "1.0" 
 		dockerHubUser="imrankha4n" 
+		DOCKER_USERNAME = credentials('imrankha4n')
+        	DOCKER_PASSWORD = credentials('Raftaar@1996')
 		containerName="insure-me"
 		httpPort="8081" 
 		} 
@@ -17,6 +19,18 @@ pipeline {
 				sh "mvn clean install -DskipTests" 
 			} 
 		} 
+		stage('Build and push image') {
+            		steps {
+                		script {
+		                    // Login to Docker registry
+		                    echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+		
+		                    // Build and push Docker image
+		                    sh 'docker build -t my-image .'
+		                    sh 'docker push my-image'
+                		     }
+			}
+		}
 		stage("Build Docker Image"){ 
 			steps{ 
 				sh "docker build -t ${dockerHubUser}/insure-me:${tag} ." 

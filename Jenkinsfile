@@ -108,3 +108,4 @@ node{
 		echo "Application started on port: ${httpPort} (http)"
 	}
 }
+}

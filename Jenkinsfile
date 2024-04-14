@@ -23,7 +23,7 @@ pipeline {
             		steps {
                 		script {
 		                    // Login to Docker registry
-		                    echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+		                    docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" --password-stdin
 		                    }
 			}
 		}

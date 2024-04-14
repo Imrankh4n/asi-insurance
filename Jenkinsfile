@@ -19,14 +19,6 @@ pipeline {
 				sh "mvn clean install -DskipTests" 
 			} 
 		} 
-		stage('Build and push image') {
-            		steps {
-                		script {
-		                    // Login to Docker registry
-		                    docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" --password-stdin
-		                    }
-			}
-		}
 		stage("Build Docker Image"){ 
 			steps{ 
 				sh "docker build -t ${dockerHubUser}/insure-me:${tag} ." 
@@ -35,7 +27,8 @@ pipeline {
 		stage("push image to dockerhub"){ 
 			steps{ 
 				withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
-					sh "docker login -u $dockerHubUser -p $dockerPassword && sh docker push $dockerHubUser/$containerName:$tag" 
+					sh "docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" --password-stdin"
+					sh "docker push $dockerHubUser/$containerName:$tag" 
 					} 
 				}
 		} 

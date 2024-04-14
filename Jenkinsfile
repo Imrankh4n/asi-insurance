@@ -46,7 +46,7 @@ pipeline {
 				} 
 		} 
 	} 
-
+}
 node{
     
     def mavenHome, mavenCMD, docker, tag, dockerHubUser, containerName, httpPort = ""
@@ -107,5 +107,4 @@ node{
 		sh "docker run -d --rm -p $httpPort:$httpPort -v /var/run/docker.sock:/var/run/docker.sock admin/jenkins --name $containerName $dockerHubUser/$containerName:$tag"
 		echo "Application started on port: ${httpPort} (http)"
 	}
-}
 }

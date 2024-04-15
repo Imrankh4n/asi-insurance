@@ -5,7 +5,7 @@ pipeline {
         PATH = "/usr/bin:$PATH" 
         tag = "1.0" 
         //dockerHubUser = credentials('imrankha4n') 
-        dockerPassword = credentials('Raftaar@1996') 
+        //dockerPassword = credentials('Raftaar@1996') 
         containerName = "insure-me" 
         httpPort = "8081" 
     } 

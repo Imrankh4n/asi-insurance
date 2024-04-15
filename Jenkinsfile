@@ -1,47 +1,49 @@
 pipeline { 
-	agent any 
-	environment { 
-		PATH = "/usr/bin:$PATH" 
-		tag = "1.0" 
-		dockerHubUser="imrankha4n" 
-		DOCKER_USERNAME = credentials('imrankha4n')
-        	DOCKER_PASSWORD = credentials('Raftaar@1996')
-		containerName="insure-me"
-		httpPort="8081" 
-		} 
-	stages { 
-		stage("code clone"){ 
-			steps { 
-				checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Imrankh4n/asi-insurance.git']])				} 
-			} 
-		stage("Maven build"){ 
-			steps { 
-				sh "mvn clean install -DskipTests" 
-			} 
-		} 
-		stage("Build Docker Image"){ 
-			steps{ 
-				sh "docker build -t ${dockerHubUser}/insure-me:${tag} ." 
-			} 
-		} 
-		stage("push image to dockerhub"){ 
-			environment { 
-				DOCKER_USERNAME = credentials('imrankha4n')
-        			DOCKER_PASSWORD = credentials('Raftaar@1996')
-			}
-			steps{ 
-				withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
-					sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} --password-stdin && docker push $dockerHubUser/$containerName:$tag" 
-					} 
-				}
-		} 
-
-		stage("Docker container deployment"){ 
-			steps { 
-				sh "docker rm $containerName -f sh docker pull $dockerHubUser/$containerName:$tag && docker run -d --rm -p $httpPort:$httpPort0 -v /var/run/docker.sock:/var/run/docker.sock admin/jenkins --name $containerName $dockerHubUser/$containerName:$tag && echo \"Application started on port: ${httpPort} (http)\""
-				} 
-		} 
-	} 
+    agent any 
+    
+    environment { 
+        PATH = "/usr/bin:$PATH" 
+        tag = "1.0" 
+        dockerHubUser = credentials('imrankha4n') 
+        dockerPassword = credentials('Raftaar@1996') 
+        containerName = "insure-me" 
+        httpPort = "8081" 
+    } 
+    
+    stages { 
+        stage("code clone"){ 
+            steps { 
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Imrankh4n/asi-insurance.git']]) 
+            } 
+        } 
+        stage("Maven build"){ 
+            steps { 
+                sh "mvn clean install -DskipTests" 
+            } 
+        } 
+        stage("Build Docker Image"){ 
+            steps{ 
+                sh "docker build -t ${dockerHubUser}/insure-me:${tag} ." 
+            } 
+        } 
+        stage("Push image to DockerHub"){ 
+            steps{ 
+                withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin && docker push $dockerHubUser/$containerName:$tag" 
+                } 
+            } 
+        } 
+        stage("Docker container deployment"){ 
+            steps { 
+                sh """ 
+                    docker rm $containerName -f
+                    docker pull $dockerHubUser/$containerName:$tag
+                    docker run -d --rm -p $httpPort:$httpPort -v /var/run/docker.sock:/var/run/docker.sock --name $containerName $dockerHubUser/$containerName:$tag
+                    echo "Application started on port: ${httpPort} (http)"
+                """
+            } 
+        } 
+    } 
 }
 node{
     

@@ -29,7 +29,7 @@ pipeline {
         stage("Push image to DockerHub"){ 
             steps{ 
                 withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
-                   // sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin && docker push $dockerHubUser/$containerName:$tag" 
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin && docker push $dockerHubUser/$containerName:$tag" 
                 } 
             } 
         } 

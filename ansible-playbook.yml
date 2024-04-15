@@ -1,5 +1,6 @@
 - name : Configure Docker on EC2 Instances
-  hosts : localhost
+  hosts : 172.31.21.57:8081
+  become : yes
   connection : ssh
   tasks : 
   - name: Deploy Docker Container

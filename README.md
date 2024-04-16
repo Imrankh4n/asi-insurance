@@ -1,3 +1,3 @@
-**Capstone Project88
+Capstone Project
 To create a microservice application architecture for an Insurance company
 through DevOps pipeline and deployment on Docker.

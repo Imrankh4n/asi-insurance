@@ -4,8 +4,8 @@ pipeline {
     environment { 
         PATH = "/usr/bin:$PATH" 
         tag = "1.0" 
-        dockerHubUser = credentials('imrandevops12') 
-        dockerPassword = credentials('Raftaar@1994') 
+        dockerHubUser = "imrandevops12"
+        //dockerPassword = credentials('Raftaar@1994') 
         containerName = "insure-me" 
         httpPort = "8081" 
     } 
@@ -29,7 +29,8 @@ pipeline {
         stage("Push image to DockerHub"){ 
             steps{ 
                 withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', passwordVariable: 'dockerPassword', usernameVariable: 'dockerHubUser')]) { 
-                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin && docker push $dockerHubUser/$containerName:$tag" 
+                   sh "docker login -u $dockerUser -p $dockerPassword --password-stdin"
+		   sh "docker push $dockerHubUser/$containerName:$tag"
                 } 
             } 
         } 

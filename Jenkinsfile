@@ -4,7 +4,7 @@ pipeline {
     environment { 
         PATH = "/usr/bin:$PATH" 
         tag = "1.0" 
-        dockerUser = credentials('imrandevops12')
+        dockerHubUser = credentials('imrandevops12')
         //dockerPassword = credentials('Raftaar@1994') 
         containerName = "insure-me" 
         httpPort = "8081" 

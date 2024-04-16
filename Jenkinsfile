@@ -55,7 +55,7 @@ node{
         mavenHome = tool name: 'maven' , type: 'maven'
         mavenCMD = "${mavenHome}/bin/mvn"
         tag="1.0"
-	dockerHubUser="imrankha4n"
+	dockerHubUser="imrandevops12"
 	containerName="insure-me"
 	httpPort="8081"
     }
